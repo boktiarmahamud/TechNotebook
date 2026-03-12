@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TechNotebook</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-action="Index" asp-controller="Post">
+                        Home
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Category</a>
+                </li>
+                
+                
+            </ul>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="ms-auto me-5">
+                    <a class="btn btn-outline-light" asp-action="Logout" asp-controller="Auth">Logout</a>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex ms-auto me-5 gap-2">
+                    <a class="btn btn-outline-light" asp-action="Login" asp-controller="Auth">Login</a>
+                    <a class="btn btn-outline-light" asp-action="Register" asp-controller="Auth">Register</a>
+
+                </div>
+            }
+            
+            
+        </div>
+    </div>
+</nav>

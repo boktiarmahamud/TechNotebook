@@ -1,0 +1,65 @@
+﻿@model TechNotebook.Models.ViewModels.PostViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-6">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Post" asp-action="Index" class="btn btn-primary">Back to List</a>
+        </div>
+    </div>
+    <hr />
+
+    <form asp-controller="Post" asp-action="Edit" method="post" enctype="multipart/form-data">
+        @* Anti-forgery token is automatically included *@
+        <input asp-for="Post.Id" type="hidden" />
+
+        <div class="form-group">
+            <label asp-for="Post.Title"></label>
+            <input asp-for="Post.Title" class="form-control" />
+            <span asp-validation-for="Post.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.CategoryId"></label>
+            <select asp-for="Post.CategoryId" class="form-control" asp-items="Model.Categories">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.Author"></label>
+            <input asp-for="Post.Author" class="form-control" />
+            <span asp-validation-for="Post.Author" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.Content"></label>
+            <textarea asp-for="Post.Content" class="form-control" rows="7"></textarea>
+            <span asp-validation-for="Post.Content" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FeatureImage">Featured Image</label>
+            <input asp-for="FeatureImage" type="file" accept="image/*" class="form-control" />
+            <span asp-validation-for="FeatureImage" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-1">Save Changes</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/vok7jj2a2k6b4y8pnlrvmed9o6eg4ha77ntq1to77fv7lig9/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea'
+        });
+    </script>
+}

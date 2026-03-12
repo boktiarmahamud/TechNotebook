@@ -1,0 +1,15 @@
+﻿@model Post
+
+@{
+	ViewData["Title"] = "Delete Post";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>Do you want to delete post</h4>
+<form asp-action="DeletePost" asp-controller="Post">
+	<input asp-for="@Model.Id" hidden/>
+	<button type="submit" class="btn btn-danger mt-2">Delete Post</button>
+	<a asp-action="Index" asp-controller="Post" class="btn btn-secondary mt-2">Cancel</a>
+
+</form>

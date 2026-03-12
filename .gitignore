@@ -1,0 +1,36 @@
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+
+# Build outputs
+/bin/
+*/bin/
+*/obj/
+publish/
+artifacts/
+
+# User files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and runtime files
+logs/
+*.log
+*.pid
+
+# OS
+.DS_Store
+Thumbs.db
+
+# dotnet / tooling
+project.lock.json
+*.dbmdl
+*.pfx
+
+# Local configuration / secrets
+appsettings.json
+appsettings.*.Local.json
+secrets.json

@@ -1,0 +1,61 @@
+﻿@using TechNotebook.Helpers
+@model IEnumerable<Post>
+
+@{
+	ViewData["Title"] = "Blog Post";
+}
+
+<div class="text-center m-3">
+	@{
+		if (ViewBag.Categories != null)
+		{
+			foreach (var category in ViewBag.Categories)
+			{
+				<a asp-controller="Post"
+				   asp-action="Index"
+				   asp-route-categoryId="@category.Id"
+				   class="badge bg-warning">@category.Name</a>
+			}
+		}
+	}
+</div>
+@if(User.IsInRole("Admin")){
+	<div class="text-end my-2">
+		<a class="btn btn-primary" asp-action="Create" asp-controller="Post">Create New Post</a>
+	</div>
+}
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+	@foreach(var post in Model)
+	{
+		<div class="col">
+			<div class="card h-100 border-0 shadow-lg rounded-1">
+				<img src="@post.FeaturedImageUrl" 
+				class="card-img-top"
+				alt="@post.Title"
+				style="height:300px;object-fit:cover"/>
+
+				<div class="card-body">
+					<h5 class="card-title">@post.Title</h5>
+					<p class="text-muted mb-2">Published on @post.PublishedDate.ToString("MMM dd yyyy")</p>
+					@{
+						var content = RemoveHtmlTagHelper.RemoveHtmlTags(post.Content);
+					}
+					<p class="card-text">
+						@(content.Length > 100 ? content.Substring(0,100) + "...":content)
+					</p>
+					<span class="badge bg-secondary">@post.Category?.Name</span>
+
+				</div>
+				<div class="card-footer d-flex justify-content-between align-items-center">
+					<a class="btn btn-primary btn-sm" asp-action="Detail" asp-controller="Post"
+					asp-route-id="@post.Id">Read more</a>
+					<div class="text-end">
+						<div class="text-muted">By @post.Author</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>

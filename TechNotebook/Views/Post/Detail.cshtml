@@ -1,0 +1,156 @@
+﻿@model TechNotebook.Models.Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<style>
+    .content-wrapper {
+        padding: 20px;   
+        max-width: 1000px;
+        margin: auto;
+        font-family: sans-serif;
+    }
+
+    .feature-image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+</style>
+@if(User.IsInRole("Admin"))
+{
+    <div class="text-end action-buttons">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" asp-controller="Post" class="btn btn-secondary me-2 my-3">Edit</a>
+        <a class="btn btn-danger" asp-action="Delete" asp-controller="Post" asp-route-id="@Model.Id">Delete Post</a>
+    </div>
+
+}
+
+<div class="content-wrapper">
+
+    <h1>@Model.Title</h1>
+
+    <p>
+        <span class="bg-primary text-white px-2 py-1 rounded">By:</span> @Model.Author |
+        <span class="bg-primary text-white px-2 py-1 rounded">Published on</span>
+        @Model.PublishedDate.ToString("MMMM dd,yyyy")
+    </p>
+
+    <p>
+        <span class="badge bg-secondary">Category</span> @Model.Category.Name
+    </p>
+
+    <img src="@Model.FeaturedImageUrl" alt="@Model.Title" class="feature-image" />
+
+    <hr />
+
+    <div>
+        @Html.Raw(Model.Content)
+    </div>
+
+    <hr />
+
+    <!-- Comment Section -->
+    <div id="commentSection">
+
+        @if (Model.Comments.Any())
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@comment.UserName</h5>
+                        <p class="card-text text-muted">@comment.CommnetDate.ToString("MMMM dd,yyyy")</p>
+                        <p class="card-text">@comment.Content</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No comments yet</p>
+        }
+
+    </div>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <!-- Comment Form -->
+        <form id="formControl">
+
+            <div class="form-group">
+                <label for="UserName">Name</label>
+                <input id="UserName" name="UserName" required class="form-control" />
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="Content">Content</label>
+                <textarea id="Content" name="Content" rows="3" required class="form-control"></textarea>
+            </div>
+
+            <button class="btn btn-primary mt-3" type="submit">Submit Comment</button>
+            <a asp-action="Index" class="btn btn-light mt-3">Back to List</a>
+
+        </form>
+    }
+    
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#formControl").on('submit', function (event) {
+
+                event.preventDefault();
+
+                var userName = $("#UserName").val();
+                var content = $("#Content").val();
+                var postId = @Model.Id;
+
+                $.ajax({
+
+                    url: '@Url.Action("AddComment", "Post")',
+                    type: 'POST',
+                    contentType: 'application/json',
+
+                    data: JSON.stringify({
+                        UserName: userName,
+                        Content: content,
+                        PostId: postId
+                    }),
+
+                    success: function (response) {
+                        $("#formControl")[0].reset()
+                        $("#commentSection").append(`
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">${response.userName}</h5>
+                                    <p class="card-text text-muted">${response.commentDate}</p>
+                                    <p class="card-text">${response.content}</p>
+                                </div>
+                            </div>
+                        `);
+
+                        $("#UserName").val("");
+                        $("#Content").val("");
+
+                    },
+
+                    error: function (err) {
+                        console.log(err);
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}
