@@ -36,3 +36,5 @@ A **web-based blog application** built with **ASP.NET Core** that demonstrates r
 - .NET Core SDK
 - IIS installed for local deployment
 
+### Installation
+git clone https://github.com/boktiarmahamud/TechNotebook
