@@ -36,7 +36,3 @@ A **web-based blog application** built with **ASP.NET Core** that demonstrates r
 - .NET Core SDK
 - IIS installed for local deployment
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/BlogApp.git
